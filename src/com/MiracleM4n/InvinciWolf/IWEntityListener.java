@@ -19,19 +19,23 @@ public class IWEntityListener extends EntityListener {
         
         if (!(event instanceof EntityDamageByEntityEvent)) return;
        
-        //System.out.println("An entity has been hit by an entity !");
-       
         if (!(event.getEntity() instanceof Wolf)) return;
-       
-        //System.out.println("A wolf has been hit !");
        
         UpdatedWolf wolf = new UpdatedWolf((Wolf)event.getEntity());
        
         if (!wolf.isTame()) return;
        
+    	if(event instanceof EntityDamageByEntityEvent){
+    		EntityDamageByEntityEvent subEvent = (EntityDamageByEntityEvent) event;
+    		
+            if ((subEvent.getDamager()) == (plugin.getServer().getPlayer(wolf.getOwner())))
+            {
+            	event.setCancelled(true);
+            }
+    	}
+    	
         if (plugin.getServer().getPlayer(wolf.getOwner()) == null) {
-        //System.out.println("The wolf's owner is offline, cancelling the event !");
-        event.setCancelled(true);
+        	event.setCancelled(true);
         }
-       }
+    }
 }
