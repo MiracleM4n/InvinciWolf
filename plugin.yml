@@ -1,0 +1,7 @@
+name: InvinciWolf
+main: com.MiracleM4n.InvinciWolf.InvinciWolf
+version: 0.0.2
+website: 
+author: MiracleM4n
+description: >
+             Provides invincibility to wolves if owner is offline.
