@@ -12,7 +12,7 @@ public class IWPlayerListener extends PlayerListener {
     }
 	
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-		
+		//Will be used to allow users to only have a certain amount of wolves.
 	}
 }
 
