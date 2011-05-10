@@ -1,7 +1,14 @@
 name: InvinciWolf
 main: com.MiracleM4n.InvinciWolf.InvinciWolf
-version: 0.0.2
+version: 0.0.3
 website: 
 author: MiracleM4n
-description: >
-             Provides invincibility to wolves if owner is offline.
+description: Provides invincibility to wolves if owner is offline...and more.
+commands:
+    getwolves:
+        description: Get all nearby wolves.
+        usage: |
+            /<command> [radius]
+            Example: /<command> - See this info.
+            Example: /<command> 30 - Get your wolves from a radius of 30.
+            

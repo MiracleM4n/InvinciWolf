@@ -1,3 +1,7 @@
+/**
+* Based on work by MikePrimm
+* https://github.com/Bukkit/CraftBukkit/pull/255
+*/
 package com.MiracleM4n.InvinciWolf;
 
 import net.minecraft.server.EntityWolf;
@@ -6,6 +10,11 @@ import net.minecraft.server.PathEntity;
 import org.bukkit.craftbukkit.entity.CraftWolf;
 import org.bukkit.entity.Wolf;
 
+/**
+* Adapter for Wolf with updated API
+* @author Ashton
+* @edit jascotty2 - health set with setowner, and updated for 1.5
+*/
 public class UpdatedWolf {
 
     CraftWolf wolf;
@@ -78,4 +87,3 @@ public class UpdatedWolf {
         return "CraftWolf[anger=" + isAngry() + ",owner=" + getOwner() + ",tame=" + isTame() + ",sitting=" + isSitting() + "]";
     }
 }
-
