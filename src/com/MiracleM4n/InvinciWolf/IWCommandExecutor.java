@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 
 public class IWCommandExecutor implements CommandExecutor {
@@ -17,6 +16,10 @@ public class IWCommandExecutor implements CommandExecutor {
         plugin = callbackPlugin;
     }
     
+    private Integer maxTeleportRadius = 64;
+    private Integer maxAdminTeleportRadius = 128;
+    private Integer noTeleportRadius = 0;
+    
     public boolean onCommand (CommandSender sender, Command command, String label, String[] args) {
     	if (!(sender instanceof Player)) {
 			return true;
@@ -26,64 +29,80 @@ public class IWCommandExecutor implements CommandExecutor {
 			if(args.length == 0) {
 				return false;
 			}
-			
 			if(args.length > 0) {
 				int radius;
 				try {
 				    radius = new Integer(args[0]);
 				} catch (NumberFormatException e) {
-				    player.sendMessage(ChatColor.RED + "[InvinciWolf] That is not a number.");
+					player.sendMessage(ChatColor.RED + "[InvinciWolf] That is not a number.");
 				    return true;
 				}
 				if ((InvinciWolf.Permissions == null && player.isOp()) || 
-						(InvinciWolf.Permissions != null && InvinciWolf.Permissions.has(player, "invinciwolf.tele")) || 
-						(InvinciWolf.Permissions != null && InvinciWolf.Permissions.has(player, "invinciwolf.teleadmin"))) {
-					if (radius < 0) {
+						(InvinciWolf.Permissions != null && InvinciWolf.Permissions.has(player, "invinciwolf.tele"))) {
+					if (radius < noTeleportRadius) {
 						player.sendMessage(ChatColor.RED + "[InvinciWolf] Cant Use Negative Values.");
 						return true; 
 					}
-					
-					if(radius <= 64) {
+					if(radius <= maxTeleportRadius) {
 						for(Entity entity : (player.getNearbyEntities(radius,radius,radius))) {
 							if (entity instanceof Wolf) {
-								if((((Tameable) entity).getOwner().equals(player)) || (((Wolf) entity).isSitting())) {
-									((Wolf) entity).setSitting(false);
-									entity.teleport(player);
-									player.sendMessage(ChatColor.RED + "[InvinciWolf] Wolves Teleported.");
-									return true;
-								}
-							}
-						}
-					}
-					
-					if(radius > 64) {
-						if ((InvinciWolf.Permissions == null && player.isOp()) || 
-								(InvinciWolf.Permissions != null && InvinciWolf.Permissions.has(player, "invinciwolf.teleadmin"))) {
-							for(Entity entitya : (player.getNearbyEntities(radius,radius,radius))) {
-								if (entitya instanceof Wolf) {
-									if((((Tameable) entitya).getOwner().equals(player)) || (((Wolf) entitya).isSitting())) {
-										((Wolf) entitya).setSitting(false);
-										entitya.teleport(player);
-										player.sendMessage(ChatColor.RED + "[InvinciWolf] Wolves Teleported.");
-										return true;
+								if((((Wolf) entity).getOwner().equals(player))) {
+									if (((Wolf) entity).isSitting()) {
+										((Wolf) entity).setSitting(false);
+										entity.teleport(player);
+									} else {
+										entity.teleport(player);
 									}
 								}
 							}
 						}
-						else{
-							player.sendMessage(ChatColor.RED + "[InvinciWolf] Too far away.");
-							return true; 
-						}
+						player.sendMessage(ChatColor.RED + "[InvinciWolf] Wolves Teleported.");
+						return true;
 					}
-					else {
+					if(radius > maxTeleportRadius) {
+						player.sendMessage(ChatColor.RED + "[InvinciWolf] Too far away.");
+						return true;
+					} else {
+						player.sendMessage(ChatColor.RED + "[InvinciWolf] Too far away.");
 						return true;
 					}
 				}
-				else {
-					player.sendMessage(ChatColor.RED + "[InvinciWolf] You don't have permissions to use this.");
+				if ((InvinciWolf.Permissions == null && player.isOp()) || 
+						(InvinciWolf.Permissions != null && InvinciWolf.Permissions.has(player, "invinciwolf.teleadmin"))) {
+					if (radius < noTeleportRadius) {
+						player.sendMessage(ChatColor.RED + "[InvinciWolf] Cant Use Negative Values.");
+						return true; 
+					}
+					if(radius <= maxAdminTeleportRadius) {
+						for(Entity entity : (player.getNearbyEntities(radius,radius,radius))) {
+							if (entity instanceof Wolf) {
+								if((((Wolf) entity).getOwner().equals(player))) {
+									if (((Wolf) entity).isSitting()) {
+										((Wolf) entity).setSitting(false);
+										entity.teleport(player);
+									} else {
+										entity.teleport(player);
+									}
+								}
+							}
+						}
+						player.sendMessage(ChatColor.RED + "[InvinciWolf] Wolves Teleported.");
+						return true;
+					}
+					if(radius > maxAdminTeleportRadius) {
+						player.sendMessage(ChatColor.RED + "[InvinciWolf] Too far away.");
+						return true;
+					} else {
+						player.sendMessage(ChatColor.RED + "[InvinciWolf] Too far away.");
+						return true;
+					}
+				} else {
+					return true;
 				}
+			} else {
+				player.sendMessage(ChatColor.RED + "[InvinciWolf] You don't have permissions to use this.");
 			}
-    	}
+		}
     	return true; 
 	}
 }

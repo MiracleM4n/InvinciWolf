@@ -25,7 +25,7 @@ package com.MiracleM4n.InvinciWolf;
 	    public void onEnable() {
 	        PluginManager pm = getServer().getPluginManager();
 	        pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Event.Priority.Highest, this);
-	        pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Highest, this);
+	        pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, playerListener, Event.Priority.Highest, this);
 	        
 	        getCommand("getwolves").setExecutor(commandexecutor);
 	        

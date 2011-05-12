@@ -1,5 +1,9 @@
 package com.MiracleM4n.InvinciWolf;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerListener;
 
@@ -10,9 +14,43 @@ public class IWPlayerListener extends PlayerListener {
     public IWPlayerListener(InvinciWolf callbackPlugin) {
         plugin = callbackPlugin;
     }
-	
+     
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-		//Will be used to allow users to only have a certain amount of wolves.
+		Player player = event.getPlayer();
+		int wolves = 0;
+		boolean hastoomany = false;
+		Entity e = event.getRightClicked();
+		if (e instanceof Wolf) {
+			for (Entity entity : player.getWorld().getEntities()) {
+		    		if(entity instanceof Wolf) {
+		    			Wolf wolf = (Wolf) entity;
+		    			if (wolf.getOwner() == player) {
+		    				if(wolves > 10) {
+		    					if ((InvinciWolf.Permissions == null && ((player.isOp())) || 
+		    							(InvinciWolf.Permissions != null && InvinciWolf.Permissions.has(player, "invinciwolf.many")))) {
+		    						{
+		    	    					hastoomany = false;
+		    						}
+		    					}else {
+		    						{
+		    							wolf.setTamed(false);
+		    							wolf.setSitting(false);
+		    							hastoomany = true;
+		    						}
+		    					}
+		    				}
+		    			} else if(!wolf.isTamed()) {
+		    				wolf.setSitting(false);
+		    			}
+		    			wolves++;
+		    		}
+		        }
+		    	if(hastoomany) {
+		    		player.sendMessage(ChatColor.RED + "[InvinciWolf] You can't own over 10 wolves.");
+		    	}
+		}
 	}
+
 }
+
 
