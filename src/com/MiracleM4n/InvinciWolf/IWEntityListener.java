@@ -2,6 +2,7 @@ package com.MiracleM4n.InvinciWolf;
 
 import com.MiracleM4n.InvinciWolf.UpdatedWolf;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
@@ -12,7 +13,7 @@ import org.bukkit.event.entity.EntityListener;
 
 public class IWEntityListener extends EntityListener {
 
-    InvinciWolf plugin = null;
+	private final InvinciWolf plugin;
     
     public IWEntityListener(InvinciWolf callbackPlugin) {
         plugin = callbackPlugin;
@@ -47,6 +48,7 @@ public class IWEntityListener extends EntityListener {
             		event.setCancelled(false);
         		} else {
             		event.setCancelled(true);
+            		((Player) attacker).sendMessage(ChatColor.RED + "[InvinciWolf] " + (plugin.pOffline) + ".");
             	}
         	}
         }
