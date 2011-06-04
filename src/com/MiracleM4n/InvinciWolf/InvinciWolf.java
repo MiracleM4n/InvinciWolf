@@ -3,8 +3,10 @@ package com.MiracleM4n.InvinciWolf;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -38,6 +40,9 @@ public class InvinciWolf extends JavaPlugin {
 	public Integer maxWolves = 10;
 	public Integer maxWolvesFix = (maxWolves-1);
 	    
+	//Hash Maps
+	public HashMap<Player, Double> wolves = new HashMap<Player, Double>();
+	
 	public static PermissionHandler Permissions;
 	
 	public void onEnable() {
