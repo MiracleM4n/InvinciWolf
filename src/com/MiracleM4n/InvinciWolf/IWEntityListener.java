@@ -1,7 +1,5 @@
 package com.MiracleM4n.InvinciWolf;
 
-import com.MiracleM4n.InvinciWolf.UpdatedWolf;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -29,9 +27,9 @@ public class IWEntityListener extends EntityListener {
     		attacker = subEvent.getDamager();
     	} 
         if (!(event.getEntity() instanceof Wolf)) return;
-        UpdatedWolf wolf = new UpdatedWolf((Wolf)event.getEntity());
-        if (!wolf.isTame()) return;
-        if ((attacker) == (plugin.getServer().getPlayer(wolf.getOwner()))) {
+        Wolf wolf = (Wolf) event.getEntity();
+        if (!wolf.isTamed()) return;
+        if ((attacker) == (wolf.getOwner())) {
             if (attacker instanceof Player) {
             	if ((InvinciWolf.Permissions == null && (((Player)attacker).isOp())) || 
             			(InvinciWolf.Permissions != null && InvinciWolf.Permissions.has(((Player)attacker), "invinciwolf.own"))) {
@@ -41,7 +39,7 @@ public class IWEntityListener extends EntityListener {
             	}
             }
         }
-        if (plugin.getServer().getPlayer(wolf.getOwner()) == null) {
+        if (wolf.getOwner() == null) {
         	if ((attacker instanceof Player)) {
             	if ((InvinciWolf.Permissions == null && (((Player)attacker).isOp())) || 
             			(InvinciWolf.Permissions != null && InvinciWolf.Permissions.has(((Player)attacker), "invinciwolf.offline"))) {
