@@ -15,80 +15,52 @@ public class IWConfigListener {
 
     Boolean hasChanged = false;
 
-    public void checkConfig() {
-		PluginDescriptionFile pdfFile = plugin.pdfFile;
+    void checkConfig() {
         YamlConfiguration config = plugin.iConfig;
         YamlConfigurationOptions configO = config.options();
 
-		//Intergers
-		plugin.maxWolves = config.getInt("Max_Wolves", plugin.maxWolves);
+        checkOption(config, "NotNumb", plugin.notNumber);
+        checkOption(config, "NegValue", plugin.negativeInterger);
+        checkOption(config, "TooFar", plugin.farAway);
+        checkOption(config, "CantFind", plugin.cantFind);
+        checkOption(config, "NoPerms", plugin.noPermissions);
+        checkOption(config, "WolfTele", plugin.wolfTele);
+        checkOption(config, "OwnOffline", plugin.pOffline);
+        checkOption(config, "Max_Tele_Radius", plugin.maxTeleportRadius);
+        checkOption(config, "Max_Admin_Tele_Radius", plugin.maxAdminTeleportRadius);
+        checkOption(config, "Max_Wolves", plugin.maxWolves);
 
+        if (hasChanged) {
+            configO.header("InvinciWolf Configuration File, Enjoy!!");
 
-		if (config.get("NotNumb") == null) {
-			config.set("NotNumb", plugin.notNumber);
-			hasChanged = true;
-		}
-		if (config.get("NegValue") == null) {
-			config.set("NegValue", plugin.negativeInterger);
-			hasChanged = true;
-		}
-		if (config.get("TooFar") == null) {
-			config.set("TooFar", plugin.farAway);
-			hasChanged = true;
-		}
-		if (config.get("CantFind") == null) {
-			config.set("CantFind", plugin.cantFind);
-			hasChanged = true;
-		}
-		if (config.get("NoPerms") == null) {
-			config.set("NoPerms", plugin.noPermissions);
-			hasChanged = true;
-		}
-		if (config.get("WolfTele") == null) {
-			config.set("WolfTele", plugin.wolfTele);
-			hasChanged = true;
-		}
-		if (config.get("OwnOffline") == null) {
-			config.set("OwnOffline", plugin.pOffline);
-			hasChanged = true;
-		}
-		if (config.get("Max_Tele_Radius") == null) {
-			config.set("Max_Tele_Radius", plugin.maxTeleportRadius);
-			hasChanged = true;
-		}
-		if (config.get("Max_Admin_Tele_Radius") == null) {
-			config.set("Max_Admin_Tele_Radius", plugin.maxAdminTeleportRadius);
-			hasChanged = true;
-		}
-		if (config.get("Max_Wolves") == null) {
-			config.set("Max_Wolves", plugin.maxWolves);
-			hasChanged = true;
-		}
-		if (hasChanged) {
-			configO.header("InvinciWolf Configuration File, Enjoy!!");
-			System.out.println("[" + pdfFile.getName() + "]" + " config.yml has been updated.");
             try {
                 config.save(plugin.iConfigF);
             } catch (IOException ignored) {}
         }
-	}
+    }
 
-	public void readConfig() {
+    void readConfig() {
         YamlConfiguration config = plugin.iConfig;
 
-		//Strings
-		plugin.notNumber  = config.getString("NotNumb", plugin.notNumber);
-		plugin.negativeInterger  = config.getString("NegValue", plugin.negativeInterger);
-		plugin.farAway  = config.getString("TooFar", plugin.farAway);
-		plugin.cantFind  = config.getString("CantFind", plugin.cantFind);
-		plugin.noPermissions  = config.getString("NoPerms", plugin.noPermissions);
-		plugin.wolfTele  = config.getString("WolfTele", plugin.wolfTele);
-		plugin.pOffline  = config.getString("OwnOffline", plugin.pOffline);
+        //Strings
+        plugin.notNumber  = config.getString("NotNumb", plugin.notNumber);
+        plugin.negativeInterger  = config.getString("NegValue", plugin.negativeInterger);
+        plugin.farAway  = config.getString("TooFar", plugin.farAway);
+        plugin.cantFind  = config.getString("CantFind", plugin.cantFind);
+        plugin.noPermissions  = config.getString("NoPerms", plugin.noPermissions);
+        plugin.wolfTele  = config.getString("WolfTele", plugin.wolfTele);
+        plugin.pOffline  = config.getString("OwnOffline", plugin.pOffline);
 
-		//Intergers
-		plugin.maxWolves = config.getInt("Max_Wolves", plugin.maxWolves);
-		plugin.maxTeleportRadius = config.getInt("Max_Tele_Radius", plugin.maxTeleportRadius);
-		plugin.maxAdminTeleportRadius = config.getInt("Max_Admin_Tele_Radius", plugin.maxAdminTeleportRadius);
-		plugin.maxWolvesFix = (plugin.maxWolves-1);
-	}
+        //Intergers
+        plugin.maxWolves = config.getInt("Max_Wolves", plugin.maxWolves);
+        plugin.maxTeleportRadius = config.getInt("Max_Tele_Radius", plugin.maxTeleportRadius);
+        plugin.maxAdminTeleportRadius = config.getInt("Max_Admin_Tele_Radius", plugin.maxAdminTeleportRadius);
+    }
+
+    void checkOption(YamlConfiguration config, String option, Object defValue) {
+        if (!config.isSet(option)) {
+            config.set(option, defValue);
+            hasChanged = true;
+        }
+    }
 }

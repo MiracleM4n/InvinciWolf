@@ -8,42 +8,52 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerListener;
 
 public class IWPlayerListener extends PlayerListener {
-    
-	private final InvinciWolf plugin;
-	
+    InvinciWolf plugin;
+
     public IWPlayerListener(InvinciWolf callbackPlugin) {
         plugin = callbackPlugin;
     }
-	
-	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-		Player player = event.getPlayer();
-		int wolves = 0;
-		boolean hasTooMany = false;
-		Entity e = event.getRightClicked();
-		if (!plugin.checkPermissions(player, "invinciwolf.many")) {
-			if (e instanceof Wolf) {
-				for (Entity entity : player.getWorld().getEntities()) {
-					if(entity instanceof Wolf) {
-						Wolf wolf = (Wolf) entity;
-						if (wolf.getOwner() == player) {
-							if(wolves > plugin.maxWolvesFix) {
-								wolf.setTamed(false);
-								wolf.setSitting(false);
-								event.setCancelled(true);
-								hasTooMany = true;
-							}
-						} else if(!wolf.isTamed()) {
-							wolf.setSitting(false);
-						}
-						wolves++;
-					}
-				}
-				if (hasTooMany) {
-					player.sendMessage(ChatColor.RED + "[InvinciWolf] You can't own over " + (plugin.maxWolves) + " wolves.");
-				}
-			}
-		}
-	}
+
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+
+        if (plugin.checkPermissions(player, "invinciwolf.many"))
+            return;
+
+        if (!(event.getRightClicked() instanceof Wolf))
+            return;
+
+        Integer wolves = 0;
+        Boolean hasTooMany = false;
+
+        for (Entity entity : player.getWorld().getEntities()) {
+            if(!(entity instanceof Wolf))
+                continue;
+
+            Wolf wolf = (Wolf) entity;
+            Wolf cWolf = (Wolf) event.getRightClicked();
+
+            if (!wolf.isTamed()) {
+                wolf.setSitting(false);
+                continue;
+            }
+
+            if (wolf.getOwner() != player)
+                continue;
+
+            wolves++;
+
+            if(wolves >= plugin.maxWolves) {
+                cWolf.setTamed(false);
+                cWolf.setSitting(false);
+                event.setCancelled(true);
+                hasTooMany = true;
+            }
+        }
+
+        if (hasTooMany)
+            player.sendMessage(ChatColor.RED + "[InvinciWolf] You can't own over " + (plugin.maxWolves) + " wolves.");
+    }
 }
 
 
