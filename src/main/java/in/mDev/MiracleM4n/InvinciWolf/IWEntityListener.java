@@ -1,4 +1,4 @@
-package net.D3GN.MiracleM4n.InvinciWolf;
+package in.mDev.MiracleM4n.InvinciWolf;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
