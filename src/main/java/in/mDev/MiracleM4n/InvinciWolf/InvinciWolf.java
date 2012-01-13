@@ -13,8 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
-
 public class InvinciWolf extends JavaPlugin {
     PluginDescriptionFile pdfFile;
     PluginManager pm;
@@ -44,10 +42,6 @@ public class InvinciWolf extends JavaPlugin {
     // Permissions
     public PermissionHandler permissions;
     Boolean permissionsB = false;
-
-    // GroupManager
-    public AnjoPermissionsHandler gmPermissions;
-    Boolean gmPermissionsB = false;
 
     public void onEnable() {
         pdfFile = getDescription();
@@ -89,27 +83,20 @@ public class InvinciWolf extends JavaPlugin {
             return;
         }
 
-        permTest = pm.getPlugin("GroupManager");
-        if (permTest != null) {
-            gmPermissionsB = true;
-            log("[" + pdfFile.getName() + "] " + permTest.getDescription().getName() + " v" +  (permTest.getDescription().getVersion()) + " found hooking in.");
-            return;
-        }
-
        log("[" + pdfFile.getName() + "] No Permissions plugins were found defaulting to permissions.yml/SuperPerms Plugin.");
     }
 
     void log(Object loggedObject) {
-        getServer().getConsoleSender().sendMessage(loggedObject.toString());
+        try {
+            getServer().getConsoleSender().sendMessage(loggedObject.toString());
+        } catch (IncompatibleClassChangeError ignored) {
+            System.out.println(loggedObject);
+        }
     }
 
     Boolean checkPermissions(Player player, String node) {
         if (permissionsB)
             if (permissions.has(player, node))
-                return true;
-
-        if (gmPermissionsB)
-            if (gmPermissions.has(player, node))
                 return true;
 
         return player.hasPermission(node) || player.isOp();
@@ -120,10 +107,6 @@ public class InvinciWolf extends JavaPlugin {
     Boolean checkPermissions(Player player, String node, Boolean useOp) {
         if (permissionsB)
             if (permissions.has(player, node))
-                return true;
-
-        if (gmPermissionsB)
-            if (gmPermissions.has(player, node))
                 return true;
 
         if (useOp)
