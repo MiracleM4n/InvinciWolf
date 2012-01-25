@@ -4,17 +4,19 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
 
-public class IWEntityListener extends EntityListener {
+public class IWEntityListener implements Listener {
     InvinciWolf plugin;
     
     public IWEntityListener(InvinciWolf callbackPlugin) {
         plugin = callbackPlugin;
     }
-    
+
+    @EventHandler(event = EntityDamageEvent.class)
     public void onEntityDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Wolf))
             return;

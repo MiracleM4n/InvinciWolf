@@ -4,16 +4,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerListener;
 
-public class IWPlayerListener extends PlayerListener {
+public class IWPlayerListener implements Listener {
     InvinciWolf plugin;
 
     public IWPlayerListener(InvinciWolf callbackPlugin) {
         plugin = callbackPlugin;
     }
 
+    @EventHandler(event = PlayerInteractEntityEvent.class)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
 

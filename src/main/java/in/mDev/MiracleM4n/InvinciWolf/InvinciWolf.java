@@ -4,15 +4,11 @@ import java.io.File;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
-
+@SuppressWarnings("unused")
 public class InvinciWolf extends JavaPlugin {
     PluginDescriptionFile pdfFile;
     PluginManager pm;
@@ -39,18 +35,12 @@ public class InvinciWolf extends JavaPlugin {
     public Integer maxAdminTeleportRadius = 128;
     public Integer maxWolves = 10;
 
-    // Permissions
-    public PermissionHandler permissions;
-    Boolean permissionsB = false;
-
     public void onEnable() {
         pdfFile = getDescription();
         pm = getServer().getPluginManager();
 
         iConfigF = new File(getDataFolder(), "config.yml");
         iConfig = YamlConfiguration.loadConfiguration(iConfigF);
-
-        setupPerms();
 
         eListener = new IWEntityListener(this);
         pListener = new IWPlayerListener(this);
@@ -60,8 +50,8 @@ public class InvinciWolf extends JavaPlugin {
         cListener.checkConfig();
         cListener.readConfig();
 
-        pm.registerEvent(Event.Type.ENTITY_DAMAGE, eListener, Event.Priority.Highest, this);
-        pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, pListener, Event.Priority.Highest, this);
+        pm.registerEvents(eListener, this);
+        pm.registerEvents(pListener, this);
 
         getCommand("getwolves").setExecutor(cExecutor);
 
@@ -72,43 +62,15 @@ public class InvinciWolf extends JavaPlugin {
         System.out.println("[" + (pdfFile.getName()) + "]" + " version " + pdfFile.getVersion() + " is disabled!");
     }
 
-    void setupPerms() {
-        Plugin permTest;
-
-        permTest = pm.getPlugin("Permissions");
-        if (permTest != null) {
-            permissions = ((Permissions) permTest).getHandler();
-            permissionsB = true;
-            log("[" + pdfFile.getName() + "] " + permTest.getDescription().getName() + " v" +  (permTest.getDescription().getVersion()) + " found hooking in.");
-            return;
-        }
-
-       log("[" + pdfFile.getName() + "] No Permissions plugins were found defaulting to permissions.yml/SuperPerms Plugin.");
-    }
-
     void log(Object loggedObject) {
-        try {
-            getServer().getConsoleSender().sendMessage(loggedObject.toString());
-        } catch (IncompatibleClassChangeError ignored) {
-            System.out.println(loggedObject);
-        }
+        System.out.println(loggedObject);
     }
 
     Boolean checkPermissions(Player player, String node) {
-        if (permissionsB)
-            if (permissions.has(player, node))
-                return true;
-
         return player.hasPermission(node) || player.isOp();
-
     }
 
-    @SuppressWarnings("unused")
     Boolean checkPermissions(Player player, String node, Boolean useOp) {
-        if (permissionsB)
-            if (permissions.has(player, node))
-                return true;
-
         if (useOp)
             return player.isOp();
 
