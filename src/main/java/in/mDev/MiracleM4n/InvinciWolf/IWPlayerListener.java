@@ -15,7 +15,7 @@ public class IWPlayerListener implements Listener {
         plugin = callbackPlugin;
     }
 
-    @EventHandler(event = PlayerInteractEntityEvent.class)
+    @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
 

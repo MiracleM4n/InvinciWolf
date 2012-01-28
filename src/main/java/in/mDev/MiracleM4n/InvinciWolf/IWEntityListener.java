@@ -16,7 +16,7 @@ public class IWEntityListener implements Listener {
         plugin = callbackPlugin;
     }
 
-    @EventHandler(event = EntityDamageEvent.class)
+    @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Wolf))
             return;
