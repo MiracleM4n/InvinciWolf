@@ -18,16 +18,29 @@ public class IWConfigListener {
         YamlConfiguration config = plugin.iConfig;
         YamlConfigurationOptions configO = config.options();
 
-        checkOption(config, "NotNumb", plugin.notNumber);
-        checkOption(config, "NegValue", plugin.negativeInterger);
-        checkOption(config, "TooFar", plugin.farAway);
-        checkOption(config, "CantFind", plugin.cantFind);
-        checkOption(config, "NoPerms", plugin.noPermissions);
-        checkOption(config, "WolfTele", plugin.wolfTele);
-        checkOption(config, "OwnOffline", plugin.pOffline);
-        checkOption(config, "Max_Tele_Radius", plugin.maxTeleportRadius);
-        checkOption(config, "Max_Admin_Tele_Radius", plugin.maxAdminTeleportRadius);
-        checkOption(config, "Max_Wolves", plugin.maxWolves);
+        editOption(config, "NotNumb", "message.notNumber");
+        editOption(config, "NegValue", "message.negativeValue");
+        editOption(config, "TooFar", "message.tooFar");
+        editOption(config, "CantFind", "message.cantFind");
+        editOption(config, "NoPerms", "message.noPerm");
+        editOption(config, "WolfTele", "message.wolfTele");
+        editOption(config, "OwnOffline", "message.ownerOffline");
+        editOption(config, "Max_Wolves", "message.maxWolves");
+
+        editOption(config, "Max_Tele_Radius", "int.maxTele");
+        editOption(config, "Max_Admin_Tele_Radius", "int.maxAdminTele");
+
+        checkOption(config, "message.notNumber", plugin.notNumber);
+        checkOption(config, "message.negativeValue", plugin.negativeInterger);
+        checkOption(config, "message.tooFar", plugin.farAway);
+        checkOption(config, "message.cantFind", plugin.cantFind);
+        checkOption(config, "message.noPerm", plugin.noPermissions);
+        checkOption(config, "message.itemCleared", plugin.wolfTele);
+        checkOption(config, "message.ownerOffline", plugin.pOffline);
+        checkOption(config, "message.maxWolves", plugin.maxWolves);
+
+        checkOption(config, "int.maxTele", plugin.maxTeleportRadius);
+        checkOption(config, "int.maxAdminTele", plugin.maxAdminTeleportRadius);
 
         if (hasChanged) {
             configO.header("InvinciWolf Configuration File, Enjoy!!");
@@ -42,23 +55,31 @@ public class IWConfigListener {
         YamlConfiguration config = plugin.iConfig;
 
         //Strings
-        plugin.notNumber  = config.getString("NotNumb", plugin.notNumber);
-        plugin.negativeInterger  = config.getString("NegValue", plugin.negativeInterger);
-        plugin.farAway  = config.getString("TooFar", plugin.farAway);
-        plugin.cantFind  = config.getString("CantFind", plugin.cantFind);
-        plugin.noPermissions  = config.getString("NoPerms", plugin.noPermissions);
-        plugin.wolfTele  = config.getString("WolfTele", plugin.wolfTele);
-        plugin.pOffline  = config.getString("OwnOffline", plugin.pOffline);
+        plugin.notNumber = config.getString("message.notNumber");
+        plugin.negativeInterger = config.getString("message.negativeValue");
+        plugin.farAway = config.getString("message.tooFar");
+        plugin.cantFind = config.getString("message.cantFind");
+        plugin.noPermissions = config.getString("message.noPerm");
+        plugin.wolfTele = config.getString("message.itemCleared");
+        plugin.pOffline = config.getString("message.ownerOffline");
 
-        //Intergers
-        plugin.maxWolves = config.getInt("Max_Wolves", plugin.maxWolves);
-        plugin.maxTeleportRadius = config.getInt("Max_Tele_Radius", plugin.maxTeleportRadius);
-        plugin.maxAdminTeleportRadius = config.getInt("Max_Admin_Tele_Radius", plugin.maxAdminTeleportRadius);
+        //Integers
+        plugin.maxWolves = config.getInt("message.maxWolves");
+        plugin.maxTeleportRadius = config.getInt("int.maxTele");
+        plugin.maxAdminTeleportRadius = config.getInt("int.maxAdminTele");
     }
 
     void checkOption(YamlConfiguration config, String option, Object defValue) {
         if (!config.isSet(option)) {
             config.set(option, defValue);
+            hasChanged = true;
+        }
+    }
+
+    void editOption(YamlConfiguration config, String oldOption, String newOption) {
+        if (config.isSet(oldOption)) {
+            config.set(newOption, config.get(oldOption));
+            config.set(oldOption, null);
             hasChanged = true;
         }
     }

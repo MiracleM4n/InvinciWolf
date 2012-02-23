@@ -13,22 +13,17 @@ public class InvinciWolf extends JavaPlugin {
     PluginDescriptionFile pdfFile;
     PluginManager pm;
 
-    IWEntityListener eListener = null;
-    IWPlayerListener pListener = null;
-    IWCommandExecutor cExecutor = null;
-    IWConfigListener cListener = null;
-
     YamlConfiguration iConfig = null;
     File iConfigF = null;
 
     //Strings
-    public String notNumber = "That is not a number";
-    public String negativeInterger = "Cant Use Negative Values";
-    public String farAway = "Too far away";
-    public String cantFind = "No Wolves Found";
-    public String noPermissions = "You don't have permissions to use this";
-    public String wolfTele = "Wolves Teleported";
-    public String pOffline = "Wolf's Owner Is Offline Don't Kill Their Wolves";
+    public String notNumber = "That is not a number.";
+    public String negativeInterger = "Can't use negative values.";
+    public String farAway = "Too far away.";
+    public String cantFind = "No Wolves found.";
+    public String noPermissions = "You don't have permissions to use this.";
+    public String wolfTele = "Wolves Teleported.";
+    public String pOffline = "Wolf's Owner is Offline don't kill their Wolves.";
 
     //Integers
     public Integer maxTeleportRadius = 64;
@@ -42,18 +37,13 @@ public class InvinciWolf extends JavaPlugin {
         iConfigF = new File(getDataFolder(), "config.yml");
         iConfig = YamlConfiguration.loadConfiguration(iConfigF);
 
-        eListener = new IWEntityListener(this);
-        pListener = new IWPlayerListener(this);
-        cExecutor = new IWCommandExecutor(this);
-        cListener = new IWConfigListener(this);
+        new  IWConfigListener(this).checkConfig();
+        new  IWConfigListener(this).readConfig();
 
-        cListener.checkConfig();
-        cListener.readConfig();
+        pm.registerEvents(new IWEntityListener(this), this);
+        pm.registerEvents(new IWPlayerListener(this), this);
 
-        pm.registerEvents(eListener, this);
-        pm.registerEvents(pListener, this);
-
-        getCommand("getwolves").setExecutor(cExecutor);
+        getCommand("getwolves").setExecutor(new IWCommandExecutor(this));
 
         System.out.println("[" + (pdfFile.getName()) + "]" + " version " + pdfFile.getVersion() + " is enabled!");
     }
