@@ -1,7 +1,6 @@
 name: InvinciWolf
-main: in.mDev.MiracleM4n.InvinciWolf.InvinciWolf
+main: com.miraclem4n.invinciwolf.InvinciWolf
 version: ${m.version}-${build.number}-${p.version}
-website: 
 author: MiracleM4n
 description: Provides invincibility to wolves if owner is offline...and more.
 commands:

@@ -1,4 +1,4 @@
-package in.mDev.MiracleM4n.InvinciWolf;
+package com.miraclem4n.invinciwolf;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package in.mDev.MiracleM4n.InvinciWolf;
+package com.miraclem4n.invinciwolf;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.file.YamlConfigurationOptions;
